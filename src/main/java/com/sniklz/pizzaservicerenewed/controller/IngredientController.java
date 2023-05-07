@@ -2,10 +2,14 @@ package com.sniklz.pizzaservicerenewed.controller;
 
 import com.sniklz.pizzaservicerenewed.dto.request.IngredientRequestDto;
 import com.sniklz.pizzaservicerenewed.dto.response.IngredientResponseDto;
+import com.sniklz.pizzaservicerenewed.dto.response.PizzaResponseDto;
 import com.sniklz.pizzaservicerenewed.model.Ingredient;
 import com.sniklz.pizzaservicerenewed.service.IngredientService;
 import com.sniklz.pizzaservicerenewed.service.mapper.UniversalMapper;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/ingredient")
@@ -30,6 +34,11 @@ public class IngredientController {
     @GetMapping("{id}")
     public IngredientResponseDto getIngredientById(@PathVariable Long id) {
         return mapper.toDto(ingredientService.get(id));
+    }
+
+    @GetMapping("/getAll")
+    public List<IngredientResponseDto> getAll() {
+        return ingredientService.findAll().stream().map(mapper::toDto).collect(Collectors.toList());
     }
 
     @PutMapping("{id}")
